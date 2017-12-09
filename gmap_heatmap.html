@@ -21,31 +21,30 @@
   <body>
     <div id="map"></div>
     <script>
-var pointarray, heatmap;
-var gradient, gradientStep = -1;
+      var pointarray, heatmap;
+      var gradient, gradientStep = -1;
 
-var popularity = [
-    {location: new google.maps.LatLng(35.778217, -78.644254),weight:0.2},
-    {location: new google.maps.LatLng(35.776217, -78.645011),weight:0.5},
-    {location: new google.maps.LatLng(35.777785, -78.639010),weight:0.8},
-    {location: new google.maps.LatLng(35.780396, -78.646074),weight:0.5},
-    {location: new google.maps.LatLng(35.793822, -78.688816),weight:0.5},
-    {location: new google.maps.LatLng(35.786224, -78.661483),weight:1},
-    {location: new google.maps.LatLng(35.786115, -78.647675),weight:1},
-    {location: new google.maps.LatLng(35.775306, -78.638122),weight:0.4},
-    {location: new google.maps.LatLng(35.777870, -78.634559),weight:1},
-    {location: new google.maps.LatLng(35.777289, -78.636743),weight:1}
-];
-	
+      var popularity = [
+          {location: new google.maps.LatLng(35.778217, -78.644254),weight:0.2},
+          {location: new google.maps.LatLng(35.776217, -78.645011),weight:0.5},
+          {location: new google.maps.LatLng(35.777785, -78.639010),weight:0.8},
+          {location: new google.maps.LatLng(35.780396, -78.646074),weight:0.5},
+          {location: new google.maps.LatLng(35.793822, -78.688816),weight:0.5},
+          {location: new google.maps.LatLng(35.786224, -78.661483),weight:1},
+          {location: new google.maps.LatLng(35.786115, -78.647675),weight:1},
+          {location: new google.maps.LatLng(35.775306, -78.638122),weight:0.4},
+          {location: new google.maps.LatLng(35.777870, -78.634559),weight:1},
+          {location: new google.maps.LatLng(35.777289, -78.636743),weight:0.7}
+      ];
+
 
       function initMap() {
         // Styles a map in night mode.
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 14,
-    center: {
-      lat: 35.781,
-      lng: -78.645
-    },
+          center: {
+            lat: 35.781,lng: -78.645
+          },
           styles: [
             {elementType: 'geometry', stylers: [{color: '#242f3e'}]},
             {elementType: 'labels.text.stroke', stylers: [{color: '#242f3e'}]},
@@ -127,7 +126,7 @@ var popularity = [
             }
           ]
         });
-      
+
     var pointArray = new google.maps.MVCArray(popularity);
 
     heatmap = new google.maps.visualization.HeatmapLayer({
@@ -137,47 +136,47 @@ var popularity = [
 
     heatmap.setMap(map);
     setGradient();
-    
+
     google.maps.event.addListenerOnce(map, 'tilesloaded', modulateGradient);
 	}
 
-function setGradient() {
-    gradient = [
-    'rgba(255, 0, 0, 0)',
-    'rgba(255, 0, 0, 0.1)',
-    'rgba(255, 0, 0, 0.2)',
-    'rgba(255, 0, 0, 0.3)',
-    'rgba(255, 0, 0, 0.4)',
-    'rgba(255, 0, 0, 0.5)',
-    'rgba(255, 0, 0, 0.6)',
-    'rgba(255, 0, 0, 0.7)',
-    'rgba(255, 0, 0, 0.8)',
-    'rgba(255, 0, 0, 0.9)',
-    'rgba(255, 0, 0, 1)'
-    ];
-    heatmap.set('gradient', gradient);
-}
+    function setGradient() {
+        gradient = [
+        'rgba(255, 0, 0, 0)',
+        'rgba(255, 0, 0, 0.1)',
+        'rgba(255, 0, 0, 0.2)',
+        'rgba(255, 0, 0, 0.3)',
+        'rgba(255, 0, 0, 0.4)',
+        'rgba(255, 0, 0, 0.5)',
+        'rgba(255, 0, 0, 0.6)',
+        'rgba(255, 0, 0, 0.7)',
+        'rgba(255, 0, 0, 0.8)',
+        'rgba(255, 0, 0, 0.9)',
+        'rgba(255, 0, 0, 1)'
+        ];
+        heatmap.set('gradient', gradient);
+    }
 
-function modulateGradient() {
-    var modulator = function() {
-        var newGradient = gradient.slice(0, heatmap.get('gradient').length + gradientStep);
-        
-        if (newGradient.length == gradient.length || newGradient.length == 1) {
-            gradientStep *= -1;
-        }
-        
-        heatmap.set('gradient', newGradient);
-        
+    function modulateGradient() {
+        var modulator = function() {
+            var newGradient = gradient.slice(0, heatmap.get('gradient').length + gradientStep);
+
+            if (newGradient.length == gradient.length || newGradient.length == 7) {
+                gradientStep *= -1;
+            }
+
+            heatmap.set('gradient', newGradient);
+
+            setTimeout(modulator, 100);
+        };
+
         setTimeout(modulator, 100);
-    };
-    
-    setTimeout(modulator, 100);
-}
+    }
 
-google.maps.event.addDomListener(window, 'load', initialize);
+    google.maps.event.addDomListener(window, 'load', initialize);
 
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkUOdZ5y7hMm0yrcCQoCvLwzdM6M8s5qk&callback=initMap"
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkUOdZ5y7hMm0yrcCQoCvLwzdM6M8s5qk&libraries=visualization&callback=initMap"
     async defer></script>
   </body>
 </html>
